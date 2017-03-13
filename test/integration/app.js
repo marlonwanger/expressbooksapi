@@ -91,5 +91,18 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
     });
   });
 
+  describe('Route DELETE /books/{id}', () => {
+    it('should delete a book', done => {
+      
+      request
+        .delete('/books/1')
+        .end((err,res) => {
+
+          expect(res.statusCode).to.be.eql(204); //204 = no content;
+
+          done(err);
+        });
+    });
+  });
 
 });
