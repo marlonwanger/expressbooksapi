@@ -3,6 +3,7 @@
 describe('Routes Books', () => { //describe passo uma descrição e uma funcao como callback
 
   const Books = app.datasource.models.Books;
+  
   const defaultBook = {
     id:1,
     name:'Default Book'
@@ -49,6 +50,46 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
     });
   });
 
+  describe('Route POST /books', () => {
+    it('should create a book', done => {
+      
+      const newBook = {
+        id: 2,
+        name: 'New book'
+      };
+
+      request
+        .post('/books')
+        .send(newBook)
+        .end((err,res) => {
+
+          expect(res.body.id).to.be.eql(newBook.id);
+          expect(res.body.name).to.be.eql(newBook.name);
+
+          done(err);
+        });
+    });
+  });
+
+  describe('Route PUT /books/{id}', () => {
+    it('should update a book', done => {
+      
+      const updatedBook = {
+        id: 1,
+        name: 'Updated Book'
+      };
+
+      request
+        .put('/books/1')
+        .send(updatedBook)
+        .end((err,res) => {
+
+          expect(res.body).to.be.eql([1]);
+
+          done(err);
+        });
+    });
+  });
 
 
 });
