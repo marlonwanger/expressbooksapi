@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test-integration": "mocha --opts test/integration/mocha.opts test/integration/*.js"
+    "test-integration": "set NODE_ENV=test&& mocha --opts test/integration/mocha.opts test/integration/*.js",
+    "test-unit": "set NODE_ENV=test&& mocha --opts test/unit/mocha.opts test/unit/**/*.js",
+    "test-contract": "set NODE_ENV=test&& mocha --opts test/contracts/mocha.opts test/contracts/contracts/*.js",
+    "test": "npm run test-contract && npm run test-unit && npm run test-integration"
   },
   "author": "Marlon Wanger",
   "license": "ISC",
@@ -21,7 +23,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "joi": "^10.2.2",
+    "joi-assert": "0.0.3",
     "mocha": "^3.2.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "testdouble": "^1.11.2"
   }
 }
