@@ -1,0 +1,18 @@
+Mocha - Mocha é o test runner, ele que vai rodar a aplicação
+
+Supertest - supertest sobe a aplicação
+
+Chai - Faz a acertação
+
+
+-----------
+Arquivo de conf do mocha é o 
+
+mocha.opts
+
+--require test/integration/helpers.js -> arquivo de helpers globais para todos os tests usarem 
+--reporter spec -> Preciso descobrir o que é o reporter
+--compilers js:babel-core/register -> quem vai fazer a compilação do es6 para o es que roda nos browsers
+--slow 5000 -> tempo que os testes vao rodar
+
+Teste de integração serve parar verificar se a comunição entre os componentes esta funcionando normalmente
