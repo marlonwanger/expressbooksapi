@@ -1,23 +1,37 @@
 //Vamos garantir que toda vez que o app iniciar , vai estar com um cenario limpo, vmaos criar um livro default
-
+import jwt from 'jwt-simple'
 describe('Routes Books', () => { //describe passo uma descrição e uma funcao como callback
 
   const Books = app.datasource.models.Books;
-  
+  const Users = app.datasource.models.Users;
+  const jwtSecret = app.config.jwtSecret;
+
   const defaultBook = {
     id:1,
     name:'Default Book',
     description: 'Default Description',
   }; //Crio um livro padrao para o teste
 
+  let token;
+
+  const defaultUser = {
+    name:"testes",
+    email: "teste@mail.com",
+    password: "123456"
+  }
+
   //Antes de cada test ele vai apagar tudo do banco e criar
   beforeEach(done => {
-    Books
-      .destroy({where:{}})
-      .then( () => Books.create(defaultBook))
-      .then( () => {
-        done();
-      });
+    Users.destroy({where: {}})
+      .then( () => Users.create(defaultUser))
+      .then( user => {
+        Books.destroy({where: {}})
+          .then( () => Books.create(defaultBook))
+          .then( () => {
+            token = jwt.encode({id:user.id},jwtSecret);
+            done();
+          })
+      })
   });
 
   describe('Route GET /books', () => {
@@ -25,6 +39,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
       
       request //request é global definido no helpers.js
         .get('/books') //Rota no qual ele vai verificar
+        .set('Authorization',`JWT ${token}`)
         .end((err,res) => { //Quando acabar, espero um err ou uma response
 
           expect(res.body[0].id).to.be.eql(defaultBook.id);//o Chai espera que res.body[0].id < que vem da rota seja igual ao default book
@@ -42,6 +57,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
       
       request //request é global definido no helpers.js
         .get('/books/1') //Rota no qual ele vai verificar
+        .set('Authorization',`JWT ${token}`)
         .end((err,res) => { //Quando acabar, espero um err ou uma response
 
           expect(res.body.id).to.be.eql(defaultBook.id);//o Chai espera que res.body[0].id < que vem da rota seja igual ao default book
@@ -64,6 +80,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
 
       request
         .post('/books')
+        .set('Authorization',`JWT ${token}`)
         .send(newBook)
         .end((err,res) => {
 
@@ -86,6 +103,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
 
       request
         .put('/books/1')
+        .set('Authorization',`JWT ${token}`)
         .send(updatedBook)
         .end((err,res) => {
 
@@ -101,6 +119,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
       
       request
         .delete('/books/1')
+        .set('Authorization',`JWT ${token}`)
         .end((err,res) => {
 
           expect(res.statusCode).to.be.eql(204); //204 = no content;

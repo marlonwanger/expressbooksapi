@@ -8,5 +8,7 @@ export default {
       define: {
         underscored: true
       }
-    }
+    },
+    jwtSecret: 'drag0n',
+    jwtSession: {session:false}
 }

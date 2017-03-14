@@ -2,16 +2,27 @@ import express from 'express';
 import config from './config/config';
 import datasource from './config/datasource';
 import bodyParser from 'body-parser';
+
 import booksRouter from './routes/books';
+import usersRouter from './routes/users';
+import authRouter from './routes/auth';
+
+import authorization from './auth';
 
 const app = express(); 
+
 
 app.config = config;
 app.datasource = datasource(app);
 app.set('port',7000);
 app.use(bodyParser.json()); //vai parsear todos os bodys como json
-const Books = app.datasource.models.Books; //Pega o model de book inicializado pelo sequelize
 
-booksRouter(app,Books);
+const auth = authorization(app);
+app.use(auth.initialize());
+app.auth = auth;
+
+booksRouter(app);
+usersRouter(app);
+authRouter(app);
 
 export default app;
