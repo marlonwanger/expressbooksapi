@@ -6,7 +6,8 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
   
   const defaultBook = {
     id:1,
-    name:'Default Book'
+    name:'Default Book',
+    description: 'Default Description',
   }; //Crio um livro padrao para o teste
 
   //Antes de cada test ele vai apagar tudo do banco e criar
@@ -28,6 +29,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
 
           expect(res.body[0].id).to.be.eql(defaultBook.id);//o Chai espera que res.body[0].id < que vem da rota seja igual ao default book
           expect(res.body[0].name).to.be.eql(defaultBook.name);
+          expect(res.body[0].description).to.be.eql(defaultBook.description);
 
           done(err); //caso de error, ele passa o error para terminar
         });
@@ -44,6 +46,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
 
           expect(res.body.id).to.be.eql(defaultBook.id);//o Chai espera que res.body[0].id < que vem da rota seja igual ao default book
           expect(res.body.name).to.be.eql(defaultBook.name);
+          expect(res.body.description).to.be.eql(defaultBook.description);
 
           done(err); //caso de error, ele passa o error para terminar
         });
@@ -55,7 +58,8 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
       
       const newBook = {
         id: 2,
-        name: 'New book'
+        name: 'New book',
+        description: 'New book description'
       };
 
       request
@@ -65,6 +69,7 @@ describe('Routes Books', () => { //describe passo uma descrição e uma funcao c
 
           expect(res.body.id).to.be.eql(newBook.id);
           expect(res.body.name).to.be.eql(newBook.name);
+          expect(res.body.description).to.be.eql(newBook.description);
 
           done(err);
         });
